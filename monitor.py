@@ -67,6 +67,8 @@ def write_health_data(textfile_path, endpoint, data):
     f.write('workers_running{endpoint="' + endpoint_name + '"} ' + str(workers_running) + '\n')
     f.close()
 
+    os.rename(tmp_output_file, output_file)
+
 
 def get_endpoint_health(config):
     for endpoint in config['endpoints']:
