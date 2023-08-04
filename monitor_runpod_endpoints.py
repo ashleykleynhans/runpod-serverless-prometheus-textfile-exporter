@@ -42,11 +42,8 @@ def get_health(endpoint, config):
     )
 
 
-def write_health_data(textfile_path, endpoint, data):
+def write_health_data(tmp_output_file, endpoint, data):
     endpoint_name = endpoint['name']
-    filename = endpoint['endpoint_id'] + '.prom'
-    output_file = os.path.join(textfile_path, filename)
-    tmp_output_file = f'{output_file}.$$'
 
     jobs_completed = data['jobs']['completed']
     jobs_failed = data['jobs']['failed']
@@ -67,10 +64,12 @@ def write_health_data(textfile_path, endpoint, data):
     f.write('workers_running{endpoint="' + endpoint_name + '"} ' + str(workers_running) + '\n')
     f.close()
 
-    os.rename(tmp_output_file, output_file)
-
 
 def get_endpoint_health(config):
+    filename = 'runpod_endpoints.prom'
+    output_file = os.path.join(config['textfile_path'], filename)
+    tmp_output_file = f'{output_file}.$$'
+
     for endpoint in config['endpoints']:
         endpoint_name = endpoint['name']
         r = get_health(endpoint, config)
@@ -78,9 +77,11 @@ def get_endpoint_health(config):
         if r.status_code == 401:
             raise Exception(f'Authentication failed for {endpoint_name} endpoint, check your API key')
         elif r.status_code == 200:
-            write_health_data(config['textfile_path'], endpoint, r.json())
+            write_health_data(tmp_output_file, endpoint, r.json())
         else:
             raise Exception(f'Unexpected status code from /health endpoint: {r.status_code}')
+
+    os.rename(tmp_output_file, output_file)
 
 
 if __name__ == '__main__':
