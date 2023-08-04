@@ -54,7 +54,7 @@ def write_health_data(tmp_output_file, endpoint, data):
     workers_idle = data['workers']['idle']
     workers_running = data['workers']['running']
 
-    f = open(tmp_output_file, 'w')
+    f = open(tmp_output_file, 'a')
     f.write('jobs_completed{endpoint="' + endpoint_name + '"} ' + str(jobs_completed) + '\n')
     f.write('jobs_failed{endpoint="' + endpoint_name + '"} ' + str(jobs_failed) + '\n')
     f.write('jobs_in_progress{endpoint="' + endpoint_name + '"} ' + str(jobs_in_progress) + '\n')
