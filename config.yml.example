@@ -1,0 +1,10 @@
+---
+textfile_path: /etc/prometheus/node_exporter_textfiles
+api_key: YOUR_RUNPOD_API_KEY
+endpoints:
+    - name: Endpoint 1
+      endpoint_id: endpoint_id_1
+    - name: Endpoint 2
+      endpoint_id: endpoint_id_3
+    - name: Endpoint 3
+      endpoint_id: endpoint_id_3
