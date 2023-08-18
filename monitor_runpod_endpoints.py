@@ -2,7 +2,6 @@
 import os
 import sys
 import httpx
-import json
 import yaml
 
 
@@ -52,16 +51,24 @@ def write_health_data(tmp_output_file, endpoint, data):
     jobs_retried = data['jobs']['retried']
 
     workers_idle = data['workers']['idle']
+    workers_initializing = data['workers']['initializing']
+    workers_ready = data['workers']['ready']
     workers_running = data['workers']['running']
+    workers_throttled = data['workers']['throttled']
 
     f = open(tmp_output_file, 'a')
+    # Jobs
     f.write('jobs_completed{endpoint="' + endpoint_name + '"} ' + str(jobs_completed) + '\n')
     f.write('jobs_failed{endpoint="' + endpoint_name + '"} ' + str(jobs_failed) + '\n')
     f.write('jobs_in_progress{endpoint="' + endpoint_name + '"} ' + str(jobs_in_progress) + '\n')
     f.write('jobs_in_queue{endpoint="' + endpoint_name + '"} ' + str(jobs_in_queue) + '\n')
     f.write('jobs_retried{endpoint="' + endpoint_name + '"} ' + str(jobs_retried) + '\n')
+    # Workers
     f.write('workers_idle{endpoint="' + endpoint_name + '"} ' + str(workers_idle) + '\n')
+    f.write('workers_initializing{endpoint="' + endpoint_name + '"} ' + str(workers_initializing) + '\n')
+    f.write('workers_ready{endpoint="' + endpoint_name + '"} ' + str(workers_ready) + '\n')
     f.write('workers_running{endpoint="' + endpoint_name + '"} ' + str(workers_running) + '\n')
+    f.write('workers_throttled{endpoint="' + endpoint_name + '"} ' + str(workers_throttled) + '\n')
     f.close()
 
 
